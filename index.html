@@ -20,7 +20,7 @@ body {
 .container {
   max-width: 1000px;
   margin: auto;
-  padding: 24px;
+  padding: 20px;
 }
 
 h1 {
@@ -32,15 +32,15 @@ h1 {
 .subtitle {
   text-align: center;
   color: #777;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 
 .card {
   background: white;
   border-radius: 20px;
-  padding: 24px;
-  margin-bottom: 20px;
-  box-shadow: 0 5px 20px rgba(60, 40, 100, 0.08);
+  padding: 22px;
+  margin-bottom: 18px;
+  box-shadow: 0 5px 20px rgba(60,40,100,.08);
 }
 
 textarea {
@@ -56,7 +56,7 @@ textarea {
 button {
   border: 0;
   border-radius: 12px;
-  padding: 13px 20px;
+  padding: 13px 18px;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
@@ -66,7 +66,7 @@ button {
 }
 
 button:hover {
-  opacity: 0.85;
+  opacity: .85;
 }
 
 button.secondary {
@@ -80,6 +80,10 @@ button.danger {
 
 button.success {
   background: #3aaa72;
+}
+
+button.warning {
+  background: #e9a52f;
 }
 
 .hidden {
@@ -99,51 +103,41 @@ button.success {
   border-radius: 10px;
 }
 
-.role-settings input {
-  width: 60px;
-  padding: 7px;
-  margin-left: 5px;
+.role-settings input,
+.role-settings select {
+  width: 100%;
+  margin-top: 7px;
+  padding: 8px;
   border: 1px solid #ccc;
-  border-radius: 7px;
+  border-radius: 8px;
+  font-size: 15px;
 }
 
 .phase {
   text-align: center;
-  font-size: 24px;
+  font-size: 25px;
   font-weight: bold;
   margin-bottom: 15px;
 }
 
 .players {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill,minmax(145px,1fr));
+  gap: 10px;
 }
 
 .player {
   background: #f7f5fc;
   border: 2px solid transparent;
   border-radius: 14px;
-  padding: 15px;
+  padding: 14px;
   text-align: center;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.player:hover {
-  transform: translateY(-2px);
-  border-color: #7657e8;
 }
 
 .player.dead {
   background: #eee;
   color: #999;
   text-decoration: line-through;
-}
-
-.player.selected {
-  border-color: #7657e8;
-  background: #eee8ff;
 }
 
 .name {
@@ -156,20 +150,28 @@ button.success {
   margin-top: 5px;
 }
 
-.role-secret {
-  margin-top: 8px;
-  font-size: 14px;
-  color: #7657e8;
-}
-
-.log {
-  background: #29243d;
-  color: white;
+.info {
+  background: #eef5ff;
   border-radius: 12px;
   padding: 15px;
-  max-height: 200px;
-  overflow-y: auto;
-  font-size: 14px;
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.mafia-box {
+  background: #fff0f0;
+  border: 2px solid #ffb5b5;
+  border-radius: 15px;
+  padding: 18px;
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.mafia-names {
+  font-size: 20px;
+  font-weight: bold;
+  color: #d13e3e;
+  margin: 12px 0;
 }
 
 .result {
@@ -181,24 +183,33 @@ button.success {
   font-weight: bold;
 }
 
-.info {
-  background: #eef5ff;
+.log {
+  background: #29243d;
+  color: white;
   border-radius: 12px;
   padding: 15px;
-  margin-bottom: 15px;
+  max-height: 220px;
+  overflow-y: auto;
+  font-size: 14px;
+  line-height: 1.7;
 }
 
-@media (max-width: 600px) {
+.counter {
+  font-size: 14px;
+  color: #777;
+}
+
+@media(max-width:600px) {
   .container {
     padding: 12px;
   }
 
   .role-settings {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2,1fr);
   }
 
   h1 {
-    font-size: 26px;
+    font-size: 27px;
   }
 }
 </style>
@@ -211,10 +222,13 @@ button.success {
 <h1>🎭 교실 마피아</h1>
 <div class="subtitle">선생님을 위한 오프라인 마피아 게임 진행 도우미</div>
 
-<!-- 시작 화면 -->
+
+<!-- ================= 시작 화면 ================= -->
+
 <div id="setupScreen">
 
   <div class="card">
+
     <h2>👥 학생 명단</h2>
 
     <div class="info">
@@ -224,50 +238,82 @@ button.success {
     <textarea id="studentInput"
       placeholder="김민수&#10;이서연&#10;박지훈&#10;최유진&#10;..."></textarea>
 
-    <p>
-      현재 인원: <strong><span id="studentCount">0</span>명</strong>
+    <p class="counter">
+      현재 인원:
+      <strong><span id="studentCount">0</span>명</strong>
     </p>
+
   </div>
 
+
   <div class="card">
+
     <h2>🎲 역할 설정</h2>
 
     <div class="role-settings">
-      <label>🔪 마피아
+
+      <label>
+        🔪 마피아
         <input id="mafiaCount" type="number" value="4" min="1">
       </label>
 
-      <label>👮 경찰
+      <label>
+        👮 경찰
         <input id="policeCount" type="number" value="3" min="0">
       </label>
 
-      <label>🩺 의사
+      <label>
+        🩺 의사
         <input id="doctorCount" type="number" value="2" min="0">
       </label>
 
-      <label>📰 기자
+      <label>
+        📰 기자
         <input id="reporterCount" type="number" value="1" min="0">
       </label>
+
     </div>
 
-    <p>
-      나머지는 자동으로 시민이 됩니다.
+
+    <h3>📰 기자 능력 사용</h3>
+
+    <select id="reporterMode">
+
+      <option value="once">
+        1회만 사용
+      </option>
+
+      <option value="three">
+        최대 3회 사용
+      </option>
+
+      <option value="daily">
+        매일 사용 가능
+      </option>
+
+    </select>
+
+
+    <p class="counter">
+      역할 수를 제외한 학생은 자동으로 시민이 됩니다.
     </p>
 
-    <button onclick="startGame()">🎲 역할 랜덤 배정</button>
+    <button onclick="startGame()">
+      🎲 역할 랜덤 배정
+    </button>
+
   </div>
 
 </div>
 
 
-<!-- 게임 화면 -->
+<!-- ================= 게임 화면 ================= -->
+
 <div id="gameScreen" class="hidden">
 
   <div class="card">
 
-    <div id="phaseTitle" class="phase">
-      🌙 밤 1
-    </div>
+    <div id="phaseTitle" class="phase"></div>
 
     <div id="phaseDescription" class="info"></div>
 
@@ -301,438 +347,880 @@ button.success {
 <script>
 
 let players = [];
+
 let night = 1;
-let phase = "role";
-let selectedPlayer = null;
+
+let phase = "";
+
+let reporterMode = "once";
+
+let reporterUses = 0;
+
 let nightActions = {};
 
+
 const roles = {
+
   mafia: "🔪 마피아",
+
   police: "👮 경찰",
+
   doctor: "🩺 의사",
+
   reporter: "📰 기자",
+
   citizen: "👤 시민"
+
 };
 
 
 // 학생 수 표시
-document.getElementById("studentInput").addEventListener("input", updateCount);
+
+document
+.getElementById("studentInput")
+.addEventListener("input", updateCount);
+
 
 function updateCount() {
-  const names = document.getElementById("studentInput").value
+
+  const names =
+    document.getElementById("studentInput")
+    .value
     .split("\n")
     .map(x => x.trim())
     .filter(x => x);
 
-  document.getElementById("studentCount").textContent = names.length;
+  document.getElementById("studentCount").textContent =
+    names.length;
+}
+
+
+// 배열 섞기
+
+function shuffle(array) {
+
+  for(let i=array.length-1;i>0;i--) {
+
+    const j =
+      Math.floor(Math.random()*(i+1));
+
+    [array[i],array[j]] =
+      [array[j],array[i]];
+  }
 }
 
 
 // 게임 시작
+
 function startGame() {
 
-  const names = document.getElementById("studentInput").value
+  const names =
+    document.getElementById("studentInput")
+    .value
     .split("\n")
     .map(x => x.trim())
     .filter(x => x);
 
-  if (names.length < 5) {
+
+  if(names.length < 5) {
+
     alert("학생이 최소 5명은 필요합니다.");
+
     return;
   }
 
-  const mafia = Number(document.getElementById("mafiaCount").value);
-  const police = Number(document.getElementById("policeCount").value);
-  const doctor = Number(document.getElementById("doctorCount").value);
-  const reporter = Number(document.getElementById("reporterCount").value);
 
-  const specialCount = mafia + police + doctor + reporter;
+  const mafia =
+    Number(document.getElementById("mafiaCount").value);
 
-  if (specialCount > names.length) {
+  const police =
+    Number(document.getElementById("policeCount").value);
+
+  const doctor =
+    Number(document.getElementById("doctorCount").value);
+
+  const reporter =
+    Number(document.getElementById("reporterCount").value);
+
+
+  const specialCount =
+    mafia + police + doctor + reporter;
+
+
+  if(specialCount > names.length) {
+
     alert("역할 수가 학생 수보다 많습니다.");
+
     return;
   }
+
+
+  reporterMode =
+    document.getElementById("reporterMode").value;
+
+  reporterUses = 0;
+
 
   let roleList = [];
 
-  for (let i = 0; i < mafia; i++) roleList.push("mafia");
-  for (let i = 0; i < police; i++) roleList.push("police");
-  for (let i = 0; i < doctor; i++) roleList.push("doctor");
-  for (let i = 0; i < reporter; i++) roleList.push("reporter");
 
-  while (roleList.length < names.length) {
+  for(let i=0;i<mafia;i++)
+    roleList.push("mafia");
+
+  for(let i=0;i<police;i++)
+    roleList.push("police");
+
+  for(let i=0;i<doctor;i++)
+    roleList.push("doctor");
+
+  for(let i=0;i<reporter;i++)
+    roleList.push("reporter");
+
+
+  while(roleList.length < names.length)
     roleList.push("citizen");
-  }
+
 
   shuffle(roleList);
 
-  players = names.map((name, index) => ({
-    id: index,
-    name: name,
-    role: roleList[index],
-    alive: true
-  }));
 
-  document.getElementById("setupScreen").classList.add("hidden");
-  document.getElementById("gameScreen").classList.remove("hidden");
+  players =
+    names.map((name,index) => ({
 
-  log("🎲 역할 배정 완료!");
-  log("교사는 학생들에게 몰래 역할을 알려주세요.");
+      id:index,
+
+      name:name,
+
+      role:roleList[index],
+
+      alive:true
+
+    }));
+
+
+  document
+    .getElementById("setupScreen")
+    .classList.add("hidden");
+
+
+  document
+    .getElementById("gameScreen")
+    .classList.remove("hidden");
+
+
+  log("🎲 역할 랜덤 배정 완료!");
+
+  log("교사는 학생들에게 비밀리에 역할을 알려주세요.");
 
   showRoleView();
 }
 
 
-// 배열 섞기
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+// 역할 확인
 
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-}
-
-
-// 역할 확인 화면
 function showRoleView() {
 
   phase = "role";
 
+
   document.getElementById("phaseTitle").textContent =
     "🎭 역할 확인";
 
+
   document.getElementById("phaseDescription").innerHTML =
-    "학생을 클릭하면 역할을 확인할 수 있습니다.<br>" +
-    "확인한 뒤 학생에게 조용히 알려주세요.";
 
-  const area = document.getElementById("actionArea");
+    "학생 이름을 누르면 역할을 확인할 수 있습니다.<br>" +
+    "확인한 뒤 해당 학생에게 조용히 알려주세요.";
 
-  area.innerHTML = `
+
+  document.getElementById("actionArea").innerHTML = `
+
     <div class="players">
+
       ${players.map(p => `
+
         <button onclick="showRole(${p.id})">
           ${p.name}
         </button>
+
       `).join("")}
+
     </div>
 
     <br>
 
-    <button class="success" onclick="startNight()">
+    <button
+      class="success"
+      onclick="startNight()">
+
       🌙 역할 확인 완료 → 첫날 밤 시작
+
     </button>
+
   `;
+
 
   renderPlayers();
 }
 
+
+// 역할 확인 팝업
 
 function showRole(id) {
 
-  const p = players.find(x => x.id === id);
+  const p =
+    players.find(x => x.id === id);
 
-  alert(`${p.name}\n\n역할: ${roles[p.role]}`);
+
+  alert(
+    `${p.name}\n\n역할: ${roles[p.role]}`
+  );
 }
 
 
-// 밤 시작
+// 첫날 밤
+
 function startNight() {
 
-  phase = "mafia";
-
   nightActions = {
-    mafiaTarget: null,
-    policeTarget: null,
-    doctorTarget: null,
-    reporterTarget: null
+
+    mafiaTarget:null,
+
+    policeTarget:null,
+
+    doctorTarget:null,
+
+    reporterTarget:null
+
   };
 
-  renderNightPhase();
+
+  showMafiaInfo();
+
 }
 
 
-function renderNightPhase() {
+// 마피아 명단 보여주기
 
-  let title = "";
-  let description = "";
-  let nextFunction = "";
+function showMafiaInfo() {
 
-  if (phase === "mafia") {
+  phase = "mafiaInfo";
 
-    title = `🌙 ${night}번째 밤 - 🔪 마피아`;
 
-    description =
-      "마피아가 죽일 학생을 선택하세요.<br>" +
-      "마피아끼리 조용히 상의한 후 한 명을 클릭합니다.";
+  const mafiaPlayers =
+    players.filter(
+      p => p.role === "mafia"
+    );
 
-    nextFunction = "selectMafia";
 
-  }
+  document.getElementById("phaseTitle").textContent =
+    `🌙 ${night}번째 밤 - 🔪 마피아 확인`;
 
-  else if (phase === "police") {
-
-    title = `🌙 ${night}번째 밤 - 👮 경찰`;
-
-    description =
-      "경찰이 조사할 학생을 선택하세요.<br>" +
-      "조사 결과는 화면에 표시됩니다.";
-
-    nextFunction = "selectPolice";
-
-  }
-
-  else if (phase === "doctor") {
-
-    title = `🌙 ${night}번째 밤 - 🩺 의사`;
-
-    description =
-      "의사가 살릴 학생을 선택하세요.";
-
-    nextFunction = "selectDoctor";
-
-  }
-
-  else if (phase === "reporter") {
-
-    title = `🌙 ${night}번째 밤 - 📰 기자`;
-
-    description =
-      "기자가 확인할 학생을 선택하세요.<br>" +
-      "기자는 게임 중 한 번만 사용할 수 있습니다.";
-
-    nextFunction = "selectReporter";
-
-  }
-
-  document.getElementById("phaseTitle").textContent = title;
 
   document.getElementById("phaseDescription").innerHTML =
-    description;
 
-  const alivePlayers = players.filter(p => p.alive);
+    "아래 학생들이 마피아입니다.<br>" +
+    "선생님이 해당 학생들에게 서로의 정체를 알려주세요.";
+
 
   document.getElementById("actionArea").innerHTML = `
-    <div class="players">
-      ${alivePlayers.map(p => `
-        <button onclick="${nextFunction}(${p.id})">
-          ${p.name}
-        </button>
-      `).join("")}
+
+    <div class="mafia-box">
+
+      <div>🔪 마피아 명단</div>
+
+      <div class="mafia-names">
+
+        ${mafiaPlayers
+          .map(p => p.name)
+          .join(" · ")}
+
+      </div>
+
+      <div>
+        마피아끼리는 서로를 알고 있어야 합니다.
+      </div>
+
     </div>
+
+    <button
+      class="danger"
+      onclick="startMafiaAction()">
+
+      🔪 마피아 공격 선택하기
+
+    </button>
+
   `;
+
 
   renderPlayers();
 }
 
 
-// 마피아
+// 마피아 공격
+
+function startMafiaAction() {
+
+  phase = "mafia";
+
+
+  document.getElementById("phaseTitle").textContent =
+    `🌙 ${night}번째 밤 - 🔪 마피아`;
+
+
+  document.getElementById("phaseDescription").innerHTML =
+
+    "마피아끼리 조용히 상의한 후<br>" +
+    "선생님이 최종 공격 대상 한 명을 선택하세요.";
+
+
+  const aliveOthers =
+    players.filter(
+      p => p.alive && p.role !== "mafia"
+    );
+
+
+  document.getElementById("actionArea").innerHTML = `
+
+    <div class="players">
+
+      ${aliveOthers.map(p => `
+
+        <button
+          class="danger"
+          onclick="selectMafia(${p.id})">
+
+          🔪 ${p.name}
+
+        </button>
+
+      `).join("")}
+
+    </div>
+
+  `;
+
+}
+
+
 function selectMafia(id) {
 
   nightActions.mafiaTarget = id;
 
-  const p = players.find(x => x.id === id);
+  const p =
+    players.find(x => x.id === id);
+
 
   log(`🔪 마피아 공격 대상: ${p.name}`);
 
-  phase = "police";
 
-  renderNightPhase();
+  startPolice();
+
 }
 
 
 // 경찰
+
+function startPolice() {
+
+  const policeAlive =
+    players.some(
+      p => p.alive && p.role === "police"
+    );
+
+
+  if(!policeAlive) {
+
+    startDoctor();
+
+    return;
+  }
+
+
+  phase = "police";
+
+
+  document.getElementById("phaseTitle").textContent =
+    `🌙 ${night}번째 밤 - 👮 경찰`;
+
+
+  document.getElementById("phaseDescription").innerHTML =
+    "조사할 학생을 선택하세요.";
+
+
+  const targets =
+    players.filter(p => p.alive);
+
+
+  document.getElementById("actionArea").innerHTML = `
+
+    <div class="players">
+
+      ${targets.map(p => `
+
+        <button
+          onclick="selectPolice(${p.id})">
+
+          👮 ${p.name}
+
+        </button>
+
+      `).join("")}
+
+    </div>
+
+  `;
+}
+
+
 function selectPolice(id) {
 
-  nightActions.policeTarget = id;
+  const p =
+    players.find(x => x.id === id);
 
-  const p = players.find(x => x.id === id);
 
   alert(
-    `${p.name}\n\n` +
-    `직업: ${roles[p.role]}`
+    `${p.name}\n\n직업: ${roles[p.role]}`
   );
+
 
   log(`👮 경찰이 ${p.name}을 조사했습니다.`);
 
-  phase = "doctor";
 
-  renderNightPhase();
+  startDoctor();
+
 }
 
 
 // 의사
+
+function startDoctor() {
+
+  const doctorAlive =
+    players.some(
+      p => p.alive && p.role === "doctor"
+    );
+
+
+  if(!doctorAlive) {
+
+    startReporter();
+
+    return;
+  }
+
+
+  phase = "doctor";
+
+
+  document.getElementById("phaseTitle").textContent =
+    `🌙 ${night}번째 밤 - 🩺 의사`;
+
+
+  document.getElementById("phaseDescription").innerHTML =
+
+    "살릴 학생을 선택하세요.<br>" +
+    "⚠️ 의사는 자기 자신을 치료할 수 없습니다.";
+
+
+  const targets =
+    players.filter(p =>
+      p.alive &&
+      p.role !== "doctor"
+    );
+
+
+  document.getElementById("actionArea").innerHTML = `
+
+    <div class="players">
+
+      ${targets.map(p => `
+
+        <button
+          class="success"
+          onclick="selectDoctor(${p.id})">
+
+          🩺 ${p.name}
+
+        </button>
+
+      `).join("")}
+
+    </div>
+
+  `;
+}
+
+
 function selectDoctor(id) {
 
   nightActions.doctorTarget = id;
 
-  const p = players.find(x => x.id === id);
+
+  const p =
+    players.find(x => x.id === id);
+
 
   log(`🩺 의사 치료 대상: ${p.name}`);
 
-  phase = "reporter";
 
-  renderNightPhase();
+  startReporter();
+
+}
+
+
+// 기자 사용 가능 여부
+
+function canReporterUse() {
+
+  const reporterAlive =
+    players.some(
+      p => p.alive && p.role === "reporter"
+    );
+
+
+  if(!reporterAlive)
+    return false;
+
+
+  if(reporterMode === "once" && reporterUses >= 1)
+    return false;
+
+
+  if(reporterMode === "three" && reporterUses >= 3)
+    return false;
+
+
+  return true;
 }
 
 
 // 기자
+
+function startReporter() {
+
+  if(!canReporterUse()) {
+
+    finishNight();
+
+    return;
+  }
+
+
+  phase = "reporter";
+
+
+  document.getElementById("phaseTitle").textContent =
+    `🌙 ${night}번째 밤 - 📰 기자`;
+
+
+  let remainingText = "";
+
+
+  if(reporterMode === "once")
+    remainingText = "남은 사용 횟수: 1회";
+
+
+  if(reporterMode === "three")
+    remainingText =
+      `남은 사용 횟수: ${3-reporterUses}회`;
+
+
+  if(reporterMode === "daily")
+    remainingText = "매일 사용 가능";
+
+
+  document.getElementById("phaseDescription").innerHTML =
+
+    "직업을 확인할 학생을 선택하세요.<br>" +
+    `📰 ${remainingText}`;
+
+
+  const targets =
+    players.filter(p => p.alive);
+
+
+  document.getElementById("actionArea").innerHTML = `
+
+    <div class="players">
+
+      ${targets.map(p => `
+
+        <button
+          onclick="selectReporter(${p.id})">
+
+          📰 ${p.name}
+
+        </button>
+
+      `).join("")}
+
+    </div>
+
+    <br>
+
+    <button
+      class="secondary"
+      onclick="skipReporter()">
+
+      이번 밤은 사용하지 않기
+
+    </button>
+
+  `;
+}
+
+
+// 기자 능력 사용
+
 function selectReporter(id) {
+
+  const p =
+    players.find(x => x.id === id);
+
+
+  reporterUses++;
+
 
   nightActions.reporterTarget = id;
 
-  const p = players.find(x => x.id === id);
 
   alert(
-    `${p.name}\n\n` +
-    `직업: ${roles[p.role]}`
+    `${p.name}\n\n직업: ${roles[p.role]}`
   );
+
 
   log(`📰 기자가 ${p.name}의 직업을 확인했습니다.`);
 
+
   finishNight();
+
 }
 
 
-// 밤 결과
+// 기자 능력 건너뛰기
+
+function skipReporter() {
+
+  log("📰 기자가 이번 밤에는 능력을 사용하지 않았습니다.");
+
+  finishNight();
+
+}
+
+
+// 밤 종료
+
 function finishNight() {
 
-  const targetId = nightActions.mafiaTarget;
-  const doctorId = nightActions.doctorTarget;
+  const targetId =
+    nightActions.mafiaTarget;
 
-  if (targetId === doctorId) {
+  const doctorId =
+    nightActions.doctorTarget;
 
-    const saved = players.find(p => p.id === targetId);
 
-    log(`🩺 의사가 ${saved.name}을 살렸습니다!`);
+  if(targetId === doctorId) {
 
-  } else {
+    const saved =
+      players.find(p => p.id === targetId);
 
-    const victim = players.find(p => p.id === targetId);
 
-    if (victim && victim.alive) {
+    log(
+      `🩺 의사가 ${saved.name}을 살렸습니다!`
+    );
+
+  }
+
+  else {
+
+    const victim =
+      players.find(p => p.id === targetId);
+
+
+    if(victim && victim.alive) {
 
       victim.alive = false;
 
-      log(`💀 ${victim.name}이 마피아에게 습격당했습니다.`);
+      log(
+        `💀 ${victim.name}이 마피아에게 습격당했습니다.`
+      );
 
     }
+
   }
+
 
   renderPlayers();
 
-  if (checkWin()) return;
 
-  setTimeout(() => {
+  if(checkWin())
+    return;
 
-    startDay();
 
-  }, 300);
+  setTimeout(
+    startDay,
+    300
+  );
+
 }
 
 
-// 낮 시작
+// 낮
+
 function startDay() {
 
   phase = "day";
 
+
   document.getElementById("phaseTitle").textContent =
     `☀️ ${night}번째 날`;
 
-  document.getElementById("phaseDescription").innerHTML =
-    "학생들이 토론한 뒤, 탈락시킬 학생을 선택하세요.";
 
-  const alivePlayers = players.filter(p => p.alive);
+  document.getElementById("phaseDescription").innerHTML =
+
+    "학생들이 토론한 뒤 투표를 진행하세요.";
+
+
+  const alivePlayers =
+    players.filter(p => p.alive);
+
 
   document.getElementById("actionArea").innerHTML = `
 
     <div class="info">
-      💬 토론 시간을 가진 후 투표를 진행하세요.
+
+      💬 충분히 토론한 뒤<br>
+      선생님이 투표 결과에 따라 한 명을 선택해주세요.
+
     </div>
 
+
     <div class="players">
+
       ${alivePlayers.map(p => `
-        <button class="danger"
+
+        <button
+          class="danger"
           onclick="vote(${p.id})">
+
           🗳️ ${p.name}
+
         </button>
+
       `).join("")}
+
     </div>
 
   `;
 
+
   renderPlayers();
+
 }
 
 
 // 투표
+
 function vote(id) {
 
-  const p = players.find(x => x.id === id);
+  const p =
+    players.find(x => x.id === id);
 
-  const confirmed = confirm(
-    `${p.name}을(를) 탈락시키겠습니까?`
-  );
 
-  if (!confirmed) return;
+  const confirmed =
+    confirm(
+      `${p.name}을(를) 탈락시키겠습니까?`
+    );
+
+
+  if(!confirmed)
+    return;
+
 
   p.alive = false;
 
-  log(`🗳️ 투표 결과: ${p.name} 탈락`);
+
+  log(
+    `🗳️ 투표 결과: ${p.name} 탈락`
+  );
+
 
   renderPlayers();
 
-  if (checkWin()) return;
+
+  if(checkWin())
+    return;
+
 
   night++;
 
-  setTimeout(() => {
 
-    startNight();
+  setTimeout(
+    startNight,
+    500
+  );
 
-  }, 500);
 }
 
 
 // 승리 조건
+
 function checkWin() {
 
-  const aliveMafia = players.filter(
-    p => p.alive && p.role === "mafia"
-  ).length;
+  const aliveMafia =
+    players.filter(
+      p => p.alive && p.role === "mafia"
+    ).length;
 
-  const aliveOthers = players.filter(
-    p => p.alive && p.role !== "mafia"
-  ).length;
 
-  if (aliveMafia === 0) {
+  const aliveOthers =
+    players.filter(
+      p => p.alive && p.role !== "mafia"
+    ).length;
 
-    showGameOver("🎉 시민 진영 승리!", "마피아가 모두 탈락했습니다.");
+
+  if(aliveMafia === 0) {
+
+    showGameOver(
+      "🎉 시민 진영 승리!",
+      "마피아가 모두 탈락했습니다."
+    );
 
     return true;
-
   }
 
-  if (aliveMafia >= aliveOthers) {
 
-    showGameOver("🔪 마피아 승리!", "마피아 수가 시민 진영과 같아졌습니다.");
+  if(aliveMafia >= aliveOthers) {
+
+    showGameOver(
+      "🔪 마피아 승리!",
+      "마피아 수가 시민 진영과 같아졌습니다."
+    );
 
     return true;
-
   }
+
 
   return false;
 }
 
 
 // 게임 종료
-function showGameOver(title, message) {
+
+function showGameOver(title,message) {
 
   document.getElementById("phaseTitle").textContent =
     title;
 
+
   document.getElementById("phaseDescription").innerHTML = `
+
     <div class="result">
+
       ${message}
+
     </div>
 
     <br>
@@ -741,63 +1229,96 @@ function showGameOver(title, message) {
       👀 전체 역할 보기
     </button>
 
-    <button class="secondary" onclick="location.reload()">
+    <button
+      class="secondary"
+      onclick="location.reload()">
+
       🔄 새 게임
+
     </button>
+
   `;
 
+
   document.getElementById("actionArea").innerHTML = "";
+
 
   log(title);
 }
 
 
 // 전체 역할
+
 function showAllRoles() {
 
-  const result = players.map(p => {
+  const result =
+    players.map(p => {
 
-    const status = p.alive ? "🟢 생존" : "🔴 사망";
+      const status =
+        p.alive ? "🟢 생존" : "🔴 사망";
 
-    return `${p.name} — ${roles[p.role]} — ${status}`;
+      return `${p.name} — ${roles[p.role]} — ${status}`;
 
-  }).join("\n");
+    }).join("\n");
+
 
   alert(result);
 }
 
 
-// 학생 목록
+// 학생 현황
+
 function renderPlayers() {
 
-  const area = document.getElementById("players");
+  const area =
+    document.getElementById("players");
 
-  area.innerHTML = players.map(p => {
 
-    const status = p.alive ? "🟢 생존" : "🔴 사망";
+  area.innerHTML =
+    players.map(p => {
 
-    return `
-      <div class="player ${p.alive ? "" : "dead"}">
-        <div class="name">${p.name}</div>
-        <div class="status">${status}</div>
-      </div>
-    `;
+      const status =
+        p.alive ? "🟢 생존" : "🔴 사망";
 
-  }).join("");
+
+      return `
+
+        <div class="player ${p.alive ? "" : "dead"}">
+
+          <div class="name">
+            ${p.name}
+          </div>
+
+          <div class="status">
+            ${status}
+          </div>
+
+        </div>
+
+      `;
+
+    }).join("");
 }
 
 
-// 기록
+// 게임 기록
+
 function log(message) {
 
-  const area = document.getElementById("log");
+  const area =
+    document.getElementById("log");
 
-  const time = new Date().toLocaleTimeString();
+
+  const time =
+    new Date().toLocaleTimeString();
+
 
   area.innerHTML +=
     `<div>[${time}] ${message}</div>`;
 
-  area.scrollTop = area.scrollHeight;
+
+  area.scrollTop =
+    area.scrollHeight;
 }
 
 </script>
